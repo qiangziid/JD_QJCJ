@@ -1,0 +1,20 @@
+{
+	"style" : "default",
+	"config" : "save_move_shoot_zjz2forIOS.dat",
+	"width" : 540,
+	"height" : 460,
+	"cancelscroll" : true,
+	"cancelname" : "取消",
+	"okname" : "确定",
+	"views" : [
+		{
+	    "id" : "RadioGroup1",
+	    "list" : "枪声脚步透视&自动开关门,无后座点框杀敌,电脑模拟器专用模式",
+	    "select" : "0",
+	    "size" : "30",
+	    "type" : "RadioGroup",
+	    "orientation" : "vertical",
+	    "color" : "0,0,225"
+    }
+	]
+}

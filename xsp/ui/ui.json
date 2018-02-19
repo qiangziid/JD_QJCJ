@@ -1,0 +1,29 @@
+{
+	"style" : "default",
+	"config" : "save_move_shoot.dat",
+	"width" : 540,
+	"height" : 760,
+	"cancelscroll" : true,
+	"cancelname" : "取消",
+	"okname" : "确定",
+	"views" : [
+
+			{
+	    "align" : "left",
+	    "color" : "255,0,0",
+	    "size" : "20",
+	    "text" : "设置点击延迟(0~20）不能移动视角就加点延迟",
+	    "type" : "Label"
+    },
+		{
+	    "id" : "Edit2",
+	    "align" : "left",
+	    "color" : "0,0,0",
+	    "kbtype" : "number",
+	    "prompt" : "0~20",
+	    "size" : "25",
+	    "text" : "0",
+	    "type" : "Edit"
+    }
+	]
+}

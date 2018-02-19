@@ -1,0 +1,28 @@
+{
+	"style" : "default",
+	"config" : "save_qqfc.dat",
+	"width" : 540,
+	"height" : 540,
+	"cancelscroll" : true,
+	"countdown" : 10,
+	"cancelname" : "取消",
+	"okname" : "确定",
+	"views" : [
+	{
+	    "align" : "left",
+	    "color" : "255,0,0",
+	    "size" : "20",
+	    "text" : "人物标记",
+	    "type" : "Label"
+    },
+		{
+	        "id" : "RadioGroup1",
+	        "list" : "home键在右侧,home键在左侧",
+	        "select" : "0",
+	        "size" : "30",
+	        "type" : "RadioGroup",
+	        "orientation" : "horizontal",
+	        "color" : "0,0,225"
+        }
+	]
+}

@@ -1,0 +1,21 @@
+{
+	"style" : "default",
+	"config" : "save_move_shoot.dat",
+	"width" : 540,
+	"height" : 500,
+	"cancelscroll" : true,
+	"countdown" : 20,
+	"cancelname" : "取消",
+	"okname" : "确定",
+	"views" : [
+		{
+	    "id" : "RadioGroup1",
+	    "list" : "Ak/M4,轻机枪",
+	    "select" : "0",
+	    "size" : "30",
+	    "type" : "RadioGroup",
+	    "orientation" : "vertical",
+	    "color" : "0,0,225"
+    }
+	]
+}
