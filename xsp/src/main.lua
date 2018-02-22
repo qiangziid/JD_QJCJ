@@ -253,19 +253,19 @@ function clickzm(x,y)
 end
 function reDdJg()
 	if rwidth == 1280 and rheight == 720 then --红米
-			yqms =  150
+			yqms =  50
 			nt = 10
 	elseif rwidth == 1334 and rheight == 750 then --p 678
-			yqms =  140
+			yqms =  40
 			nt = 11
 	elseif rwidth == 1024 and rheight == 768 then --pad1
-			yqms =  130
+			yqms =  30
 			nt = 10
 	elseif rwidth == 1920 and rheight == 1080 then --华为普遍
-			yqms =  120
+			yqms =  20
 			nt = 40
 	elseif rwidth == 2208 and rheight == 1242 then -- 678p
-			yqms =  120
+			yqms =  20
 			nt = 40
 	elseif rwidth == 2048 and rheight == 1536 then -- ipad air mini
 			yqms =  50
@@ -355,11 +355,11 @@ function swipyqphone(x1,y1,x2,y2)
     while  (math.abs(y-y2) >= step) do
         if math.abs(y-y2) >= step then y = y + move(y1,y2) end
         touchMove(index, x, y)
-				mSleep(nt)
+		mSleep(nt)
     end
 
     touchMove(index, x2, y2)
-
+	mSleep(100)
     touchUp(index, x2, y2)
 
 end
@@ -377,14 +377,14 @@ function swipyq(x1,y1,x2,y2)
       end 
     end
 
-    while  (math.abs(y-y2) >= step) do
-        if math.abs(y-y2) >= step then y = y + move(y1,y2) end
-        touchMove(index, x, y)
-				mSleep(20)
-    end
+--    while  (math.abs(y-y2) >= step) do
+--        if math.abs(y-y2) >= step then y = y + move(y1,y2) end
+--        touchMove(index, x, y)
+--				mSleep(20)
+--    end
 
-    touchMove(index, x2, y2)
-
+--    touchMove(index, x2, y2)
+	mSleep(500)
     touchUp(index, x2, y2)
 
 end
@@ -469,7 +469,7 @@ function cary()
 	end
 end
 
-if gameMode == 1 then
+if gameMode == 2 then
 	hideHUD(jd_id)     --隐藏HUD
 	ret,result = showUI("ui.json")
 	if ret == 0 then
@@ -492,7 +492,7 @@ if gameMode == 1 then
 	while true do
 		cary()
 	end
-elseif gameMode == 0 or gameMode == 2 then
+elseif gameMode == 0 or gameMode == 1 or gameMode == 3 then
 while true do
 
 	--	753 377 833 458 等比例缩放
