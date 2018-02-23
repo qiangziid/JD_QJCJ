@@ -2,6 +2,10 @@ ret,result = showUI("ui_home.json")
 if ret == 0 then
 	return;
 end
+
+ver = getOSType()
+pdev = 1 --代理定制模式0， 个人发布1
+
 gameMode = tonumber(result["RadioGroup1"])
 if gameMode == 0 then
 init("0", 1); --以当前应用 Home 键在右边初始化
@@ -29,21 +33,15 @@ jd_r = 13
 jd_ang = 90
 jd_hang = jd_ang/2
 if jd_width == 1334 then
-	jd_rx = 1098
-	jd_ry = 0
-	jd_rw = 1279
-	jd_rh = 182
-	jd__x = 1242
-	jd__y = 88
-	jd_r = 15
-	jd_fcolor =  "0|0|0xd96639"
+	jd__x = 1240
+	jd__y = 93
+	jd_r = 16
 end
 
 if jd_width == 2436 then
-
-	jd__x = 2221
-	jd__y = 131
-	jd_r = 23
+	jd__x = 1856
+	jd__y = 191
+	jd_r = 37
 end
 
 if jd_width == 2048 then
@@ -52,28 +50,46 @@ if jd_width == 2048 then
 	jd_r = 23
 end
 
-if jd_width == 1920 then
-	jd__x = 1787
-	jd__y = 127
-	jd_r = 20
+if jd_width == 1024 then
+	jd__x = 927
+	jd__y = 95
+	jd_r = 17
 end
 
-if jd_width == 2208 then
-	jd__x = 2056	
-	jd__y = 146
+if jd_width == 1440 then
+	jd__x = 1350
+	jd__y = 89
+	jd_r = 16
+end
+
+if jd_width == 1920 then
+	jd__x = 1785
+	jd__y = 134
 	jd_r = 23
 end
 
+if jd_width == 2160 then
+	jd__x = 2025
+	jd__y = 134
+	jd_r = 23
+end
+
+if jd_width == 2208 then
+	jd__x = 2052	
+	jd__y = 154
+	jd_r = 27
+end
+
 if jd_width == 2220 then
-	jd__x = 2086
-	jd__y = 127
-	jd_r = 20
+	jd__x = 2084
+	jd__y = 134
+	jd_r = 25
 end
 
 if jd_width == 1280 then
-	jd__x = 1193
-	jd__y = 84
-	jd_r = 14
+	jd__x = 1189
+	jd__y = 89
+	jd_r = 16
 end
 
 jd_arrx = {-1000}
@@ -146,6 +162,8 @@ local jd_oldx = -1
 local jd_oldy = -1
 function getPosition()
 
+	keepScreen(true);
+
 	local nindex = 0
 	for key, var in ipairs(jd_arrx) do
 		x = tonumber(jd_arrx[key])
@@ -156,7 +174,7 @@ function getPosition()
 --				sysLog(r..","..g..","..b)
 --				showHUD(jd_id,"雷达已启动！",12,"0xffff0000","0xffff0000",0,x,y,10,10)
 --			end
-			if r>=220 and g >= 220 and b >= 200 then
+			if r>=200 and g >= 200 and b >= 200 then
 				if nindex == 0 then
 					nindex = nindex + 1
 					showHUD(jd_id,"x:"..x..",y:"..y,12,"0xffff0000","msgbox_click.png",0,100,0,528,32)
@@ -201,6 +219,7 @@ function getPosition()
 		end
 
 	end
+	keepScreen(false);
 end
 --/************************************/
 local bb = require("badboy")
@@ -225,12 +244,35 @@ local zhenshiY = 300
 local gameMode = 0
 width = 1280
 height = 720
-ret,result = showUI("mainui.json")
-if ret == 0 then
-	return;
+if pdev == 0 then
+	if ver == "android" then
+		ret,result = showUI("mainui-zbdz.json")
+		if ret == 0 then
+			return;
+		end
+		gameMode = tonumber(result["RadioGroup1"]) + 1
+	else 
+		ret,result = showUI("mainuios-zbdz.json")
+		if ret == 0 then
+			return;
+		end
+		gameMode = tonumber(result["RadioGroup1"]) + 1
+	end
+else
+	if ver == "android" then
+		ret,result = showUI("mainui.json")
+		if ret == 0 then
+			return;
+		end
+		gameMode = tonumber(result["RadioGroup1"])
+	else
+		ret,result = showUI("mainuios.json")
+		if ret == 0 then
+			return;
+		end
+		gameMode = tonumber(result["RadioGroup1"])
+	end
 end
-gameMode = tonumber(result["RadioGroup1"])
-
 function clickzm(x,y)
 	if x >= height/2-105 and x <= height/2 - 5 and y >=width - 50 and y <= width then
 		if kgzm then
@@ -495,18 +537,15 @@ if gameMode == 2 then
 elseif gameMode == 0 or gameMode == 1 or gameMode == 3 then
 while true do
 
-	--	753 377 833 458 等比例缩放
 	if gameMode == 0 then
-		scalex1 = 753 / 1136
-		scaley1 = 377 / 640
-		scalex2 = 833 / 1136 
-		scaley2 = 458 / 640
-		x1 = jd_width * scalex1
-		y1 = jd_height * scaley1
-		x2 = jd_width * scalex2
-		y2 = jd_height * scaley2
+		x1 = (jd_width/2 + 100)
+		y1 = (jd_height/2 + 100)
+		x2 = (jd_width - jd_width/4)
+		y2 = (jd_height - height/4) 
 
-		x, y = findColorInRegionFuzzy(0xbababc, 95, x1, y1, x2, y2, 1, 0)
+		sysLog( x1..","..y1..","..x2..","..y2)
+		x, y = findColorInRegionFuzzy(0xbababc, 99, x1, y1, x2, y2, 0, 0)
+		sysLog(x)
 		if x > -1 then
 			touchDown(5, x, y)
 			mSleep(50)
@@ -514,35 +553,31 @@ while true do
 			mSleep(100)
 		end
 	end
+	
 	local dx, dy = -1, -1
-	if jd_width == 1334 then	--iphone6
-		dx, dy =  findColor({1151, 2, 1333, 154}, 
-		"0|0|0xd96639",
-		95, 1, 0, 0)
-	elseif jd_width == 1280 then --红米4a
-		dx, dy =  findColor({1108, 0, 1280, 158}, 
-		"0|0|0xaa4e21",
-		95, 1, 0, 0)
+
+	if jd_width == 1280 then --红米4a
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1100, 0, 1277, 178, 0, 0)
+	elseif jd_width == 1024 then  -- ipad
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 832, 0, 1022, 191, 0, 0)
 	elseif jd_width == 1136 then	--iphonese
-		dx, dy =  findColorInRegionFuzzy(0xffdacd, 95, 973, 0, 1134, 159, 0, 0)
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 973, 0, 1134, 159, 0, 0)
+	elseif jd_width == 1334 then    --iphone6s
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1146, 0, 1332, 186, 0, 0)
+	elseif jd_width == 1440 then    --1440*720
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1259, 1, 1437, 179, 0, 0)
 	elseif jd_width == 1920 then	--android
-		dx, dy = findColor({1653, 0, 1920, 243}, 
-		"0|0|0x9d6630,17|-7|0xdd8a3a",
-		95, 1, 0, 0)
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1651, 1, 1916, 271, 0, 0)
+	elseif jd_width == 2160 then -- mix2
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1890, 0, 2157, 266, 0, 0)
 	elseif jd_width == 2208 then
-		dx, dy = findColor({1905, 0, 2208, 279}, 
-		"0|0|0xb77546,-24|-3|0x94633c",
-		95, 1, 0, 0)
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1897, 0, 2204, 307, 0, 0)
 	elseif jd_width == 2220 then  -- s8 *1080
-		dx, dy = findColor({1952, 0, 2218, 241}, 
-		"0|0|0xb6583e",
-		95, 1, 0, 0)
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1947, 0, 2216, 267, 0, 0)
 	elseif jd_width == 2436 then	--iphoneX
-		dx, dy =  findColor({2085, 0, 2357, 251}, 
-		"0|0|0x9e6543",
-		95, 1, 0, 0)
+		dx, dy =  findColorInRegionFuzzy(0xb76b31, 92, 2155, 2, 2433, 278, 0, 0)
 	elseif jd_width == 2048 then -- mini4
-		dx, dy = findColorInRegionFuzzy(0xffdacd, 95, 1761, 3, 2043, 286, 0, 0)
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1664, 1, 2044, 381, 0, 0)	
 	end
 	sysLog(dx..jd_width)
 	if dx > -1 then
