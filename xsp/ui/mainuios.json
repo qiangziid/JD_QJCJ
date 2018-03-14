@@ -1,15 +1,23 @@
 {
 	"style" : "default",
 	"config" : "save_move_shoot_zjz2forIOS.dat",
-	"width" : 540,
+	"width" : 640,
 	"height" : 460,
 	"cancelscroll" : true,
 	"cancelname" : "取消",
 	"okname" : "确定",
+	
 	"views" : [
 		{
+	    "align" : "left",
+	    "color" : "0,0,225",
+	    "size" : "20",
+	    "text" : "多排2号队友目前是个坑，暂时先用单排来打，等我后续更新",
+	    "type" : "Label"
+    },
+		{
 	    "id" : "RadioGroup1",
-	    "list" : "附近敌人位置提醒增强模式,附近敌人位置提醒,点击瞄准压枪速射",
+	    "list" : "敌人位置提醒增强模式(单排),敌人位置提醒（单排）,点击瞄准压枪速射,自动开关门（单排）,纯准星模式",
 	    "select" : "0",
 	    "size" : "30",
 	    "type" : "RadioGroup",

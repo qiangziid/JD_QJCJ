@@ -13,7 +13,9 @@ elseif gameMode == 1 then
 init("0", 2);
 end
 jd_height,jd_width = getScreenSize()
- 
+ jd_idzhunxing = createHUD()     --创建一个HUD
+ showHUD(jd_idzhunxing,"",12,"0xffff0000","green.png",0,jd_width/2 - 40,jd_height/2 - 40,80,80)
+
 jd_dx,jd_dy = -1,-1;
 jd_id = createHUD()     --创建一个HUD
 showHUD(jd_id,"雷达已启动！",12,"0xffff0000","msgbox_click.png",0,100,0,178,32)      --显示HUD内容
@@ -466,6 +468,120 @@ function inShoot2(x, y)
 	return false
 end
 
+local nCountShowTime = 0;
+function getPositionPower() -- 增强版
+		jd_id1 = createHUD() 
+		jd_id2 = createHUD()     --创建一个HUD
+		jd_id3 = createHUD() 
+	local nindex = 0
+	
+	
+	local lang = 0
+	local dang = 0
+	
+	keepScreen(true);
+	for key, var in ipairs(jd_arrx) do
+
+		x = tonumber(jd_arrx[key])
+		y = tonumber(jd_arry[key])
+		if x ~= -1000 then
+			r,g,b = getColorRGB(x,y)
+--			if r > 200 then
+--				sysLog(r..","..g..","..b)
+--				showHUD(jd_id,"雷达已启动！",12,"0xffff0000","0xffff0000",0,x,y,10,10)
+--			end
+			if r>=240 and g >= 240 and b >= 240 then
+				if nindex == 0 then
+					nindex = nindex + 1
+					showHUD(jd_id,"x:"..x..",y:"..y,12,"0xffff0000","msgbox_click.png",0,100,0,528,32)
+					local xx = x
+					local yy = y
+					lang = getAngle(jd__x, jd__y, xx, yy)
+					dang = getAngle(jd__x, jd__y, jd_dx, jd_dy)
+				end
+			end
+		end
+	end
+	keepScreen(false);
+			
+	local dx, dy = -1, -1
+	if jd_width == 1280 then --红米4a
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1100, 0, 1277, 178, 0, 0)
+	elseif jd_width == 1024 then  -- ipad
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 832, 0, 1022, 191, 0, 0)
+	elseif jd_width == 1136 then	--iphonese
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 973, 0, 1134, 159, 0, 0)
+	elseif jd_width == 1334 then    --iphone6s
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1146, 0, 1332, 186, 0, 0)
+	elseif jd_width == 1440 then    --1440*720
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1259, 1, 1437, 179, 0, 0)
+	elseif jd_width == 1920 then	--android
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1651, 1, 1916, 271, 0, 0)
+	elseif jd_width == 2160 then -- mix2
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1890, 0, 2157, 266, 0, 0)
+	elseif jd_width == 2208 then
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1897, 0, 2204, 307, 0, 0)
+	elseif jd_width == 2220 then  -- s8 *1080
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1947, 0, 2216, 267, 0, 0)
+	elseif jd_width == 2436 then	--iphoneX
+		dx, dy =  findColorInRegionFuzzy(0xb76b31, 92, 2155, 2, 2433, 278, 0, 0)
+	elseif jd_width == 2048 then -- mini4
+		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1664, 1, 2044, 381, 0, 0)	
+	end
+	
+
+	sysLog(dx)
+	if dx > -1 then
+		jd_dx = dx
+		jd_dy = dy
+	else
+		nCountShowTime = nCountShowTime + 1
+		if nCountShowTime == 20 then
+			nCountShowTime = 0
+			jd_dx = -1
+			jd_dy = -1
+		end
+	end
+	if jd_dx > -1 then
+		if lang > 0 and lang <= 90 and dang > 270 and dang <=360 then
+			if (math.abs(360 - dang) + lang) > 30  then
+				showHUD(jd_id1,"",15,"0xffff0000","left.png",0,  0,jd_height/2 - jd_ww/2, jd_ww, jd_wh) 
+				
+			else
+				showHUD(jd_id2,"",15,"0xffff0000","62.png",0, (jd_width/2) *(1 - (math.abs(360 - dang) + lang)/30) - jd_ks,jd_height/3,jd_kw,jd_kh) 
+			end
+		elseif dang > 0 and dang <=90 and lang > 270 and lang <=360 then
+			if (math.abs(360 - lang) + dang) > 30 then
+				showHUD(jd_id3,"",15,"0xffff0000","right.png",0,  jd_width - jd_ww,jd_height/2 - jd_ww/2, jd_ww, jd_wh) 
+			else
+				showHUD(jd_id2,"",15,"0xffff0000","62.png",0,(jd_width/2) *( 1 + (math.abs(360 - lang) + dang)/30) - jd_ks,jd_height/3,jd_kw,jd_kh) 
+			end
+		else
+			if lang > dang then
+				if math.abs(lang-dang) > 30 then
+					showHUD(jd_id1,"",15,"0xffff0000","left.png",0,  0,jd_height/3 , jd_ww, jd_wh) 
+				else
+					showHUD(jd_id2,"",15,"0xffff0000","62.png",0, (jd_width/2) *(1 - math.abs(lang-dang)/30) - jd_ks,jd_height/3,jd_kw,jd_kh) 
+				end
+				
+			elseif lang == dang then
+				showHUD(jd_id2,"",15,"0xffff0000","62.png",0,(jd_width/2)  - jd_ks,jd_height/3,jd_kw,jd_kh) 
+			elseif lang < dang then
+				if math.abs(lang-dang) > 30 then
+					showHUD(jd_id3,"",15,"0xffff0000","right.png",0,  jd_width - jd_ww,jd_height/3 , jd_ww, jd_wh) 
+				else
+					showHUD(jd_id2,"",15,"0xffff0000","62.png",0,(jd_width/2) *( 1 + math.abs(lang-dang)/30) - jd_ks,jd_height/3,80,160) 
+				end
+			end
+		end
+	end
+	mSleep(200)
+	hideHUD(jd_id1)
+	hideHUD(jd_id2)
+	hideHUD(jd_id3)
+end
+
+
 
 
 function cary()
@@ -534,27 +650,36 @@ if gameMode == 2 then
 	while true do
 		cary()
 	end
-elseif gameMode == 0 or gameMode == 1 or gameMode == 3 then
-while true do
+else
+	while true do
+		if gameMode == 0 then -- 增强模式
+			getPositionPower()
+		else
+			if (ver == "android" and gameMode == 5) or (ver ~= "android" and gameMode == 4) then
+								hideHUD(jd_id)
+				while true do
 
-	if gameMode == 0 then
-		x1 = (jd_width/2 + 100)
-		y1 = (jd_height/2 + 100)
-		x2 = (jd_width - jd_width/4)
-		y2 = (jd_height - height/4) 
+					mSleep(100000)
+				end
+			end
+			if (ver == "android" and gameMode == 4) or (ver ~= "android" and gameMode == 3) then
+				x1 = (jd_width/2 + 100)
+				y1 = (jd_height/2 + 100)
+				x2 = (jd_width - jd_width/4)
+				y2 = (jd_height - height/4) 
 
-		sysLog( x1..","..y1..","..x2..","..y2)
-		x, y = findColorInRegionFuzzy(0xbababc, 99, x1, y1, x2, y2, 0, 0)
-		sysLog(x)
-		if x > -1 then
-			touchDown(5, x, y)
-			mSleep(50)
-			touchUp(5, x, y)  
-			mSleep(100)
-		end
-	end
-	
-	local dx, dy = -1, -1
+				sysLog( x1..","..y1..","..x2..","..y2)
+				x, y = findColorInRegionFuzzy(0xbababc, 99, x1, y1, x2, y2, 0, 0)
+				sysLog(x)
+			
+				if x > -1 then
+					touchDown(5, x, y)
+					mSleep(50)
+					touchUp(5, x, y)  
+					mSleep(100)
+				end
+			end
+			local dx, dy = -1, -1
 
 	if jd_width == 1280 then --红米4a
 		dx, dy = findColorInRegionFuzzy(0xb76b31, 92, 1100, 0, 1277, 178, 0, 0)
@@ -592,10 +717,15 @@ while true do
 		hideHUD(jd_id2)
 		hideHUD(jd_id3)
 	end
+		
+		end
+	end
+	
+	
 	
 
 end
-end
+
 
 hideHUD(jd_id)     --隐藏HUD
 --/************************************/
